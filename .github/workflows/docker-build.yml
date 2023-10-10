@@ -1,19 +1,19 @@
 name: Build and Push Docker Image
 
 on:
+  # Uncomment the following lines if you want to trigger the workflow on a push event
   # push:
   #   branches:
   #     - main  # Change this to your desired branch
   workflow_dispatch:
-
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-
     inputs:
       image-tag:
         description: 'Docker image tag'
         required: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
@@ -27,8 +27,8 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ vars.ACR_NAME }}:${{ inputs.image-tag }} .
+        run: docker build -t ${{ vars.ACR_NAME }}:${{ github.event.inputs.image-tag }} .
         working-directory: Dockerfile.linux  # Change to the directory containing your Dockerfile
 
       - name: Push Docker Image
-        run: docker push ${{ vars.ACR_NAME }}:${{ inputs.image-tag }}
+        run: docker push ${{ vars.ACR_NAME }}:${{ github.event.inputs.image-tag }}
