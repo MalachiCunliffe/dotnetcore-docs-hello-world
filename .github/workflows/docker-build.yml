@@ -27,8 +27,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build Docker Image
-        run: docker build -t ${{ vars.ACR_NAME }}:${{ github.event.inputs.image-tag }} .
-        working-directory: Dockerfile.linux  # Change to the directory containing your Dockerfile
+        run: docker build -f Dockerfile.linux -t ${{ vars.ACR_NAME }}:${{ github.event.inputs.image-tag }} .
 
       - name: Push Docker Image
         run: docker push ${{ vars.ACR_NAME }}:${{ github.event.inputs.image-tag }}
